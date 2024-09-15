@@ -31,10 +31,10 @@ class EditRegisterCustomer extends EditRecord
                 ->requiresConfirmation()
                 ->action(function($record){
 
-                    dd($record);
+                    //dd($record['id']);
 
                     Notification::make()
-                    ->title('Saved successfully')
+                    ->title('Saved successfully. Id: ' . $record['id'])
                     ->success()
                     ->send();
                 }),

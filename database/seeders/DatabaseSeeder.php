@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
 
         //\App\Models\Product::factory(20)->create();
 
+        $this->call(UserSeeder::class);
         $this->call(StatusSeeder::class);
         $this->call(TypeContactSeeder::class);
         $this->call(TypeDocumentSeeder::class);
