@@ -81,6 +81,7 @@ return [
     'field.city' => 'Cidade',
     'field.state' => 'Estado (UF)',
     'field.observation' => 'Observação',
+    'field.customer_age' => 'Idade',
 
     'helperText.documentNumber' => 'Digite somente números.',
 

@@ -6,6 +6,7 @@ use App\Filament\Resources\CustomerResource\Pages;
 use App\Filament\Resources\CustomerResource\RelationManagers\ContactsRelationManager;
 use App\Filament\Resources\CustomerResource\Widgets\CustomersStatsOverview;
 use App\Models\{Customer,Status,TypeDocument,TypeGender};
+use DateTime;
 use Filament\Forms;
 use Filament\Forms\Components\{DatePicker, DateTimePicker, RichEditor, Section, Select, TextInput};
 use Filament\Forms\Form;
@@ -106,6 +107,23 @@ class CustomerResource extends Resource
                         DatePicker::make('birthDate')
                             ->label(__('customer.field.birthDate'))
                             ->format('d/m/Y')
+                            ->columnSpan(1)
+                            ->live(true)
+                            ->afterStateUpdated(function ($state, Forms\Set $set){
+                                $date = new DateTime($state );
+                                $interval = $date->diff( new DateTime( date('Y-m-d') ) );
+                                $set('customer_age', $interval->format( '%Y anos' ));
+                            }),
+                        TextInput::make('customer_age')
+                            ->label(__('customer.field.customer_age'))
+                            ->disabled()
+                            ->default('0')
+                            ->columnSpan(1),
+                        Select::make('type_gender_id')
+                            ->label(__('customer.field.typeGender'))
+                            ->options(TypeGender::all()->pluck('name', 'id'))
+                            ->required()
+                            ->markAsRequired()
                             ->columnSpan(1),
                         Select::make('status_id')
                             ->label(__('customer.field.status'))
@@ -114,29 +132,11 @@ class CustomerResource extends Resource
                             ->required()
                             ->markAsRequired()
                             ->columnSpan(1),
-                        DateTimePicker::make('created_at')
-                            ->label(__('customer.field.createdAt'))
-                            ->disabled()
-                            ->visibleOn(['edit', 'view'])
-                            ->columnSpan(1),
-                            //->date('d/m/Y H:i:s'),
-                        DateTimePicker::make('updated_at')
-                            ->label(__('customer.field.updatedAt'))
-                            ->disabled()
-                            ->visibleOn(['edit', 'view'])
-                            ->columnSpan(1),
-                            //->date('d/m/Y H:i:s'),
                         TextInput::make('origin')
                             ->label(__('customer.field.origin'))
                             ->required()
                             ->disabled()
                             ->default('WEB')
-                            ->columnSpan(1),
-                        Select::make('type_gender_id')
-                            ->label(__('customer.field.typeGender'))
-                            ->options(TypeGender::all()->pluck('name', 'id'))
-                            ->required()
-                            ->markAsRequired()
                             ->columnSpan(1),
                     ]),
                 Section::make(__('customer.section.title.addressData'))
@@ -147,19 +147,11 @@ class CustomerResource extends Resource
                     ->schema([
                         Cep::make('postalCode')
                             ->label(__('customer.field.postalCode'))
-                            ->required()
                             ->markAsRequired()
                             ->columnSpan(1)
-                            //->live(onBlur: true)
                             ->viaCep(
-                                mode: 'suffix', // Determines whether the action should be appended to (suffix) or prepended to (prefix) the cep field, or not included at all (none).
-                                errorMessage: 'CEP inválido.', // Error message to display if the CEP is invalid.
-
-                                /**
-                                 * Other form fields that can be filled by ViaCep.
-                                 * The key is the name of the Filament input, and the value is the ViaCep attribute that corresponds to it.
-                                 * More information: https://viacep.com.br/
-                                 */
+                                mode: 'suffix',
+                                errorMessage: 'CEP inválido.',
                                 setFields: [
                                     'address' => 'logradouro',
                                     //'addressNumber' => 'numero',
@@ -167,7 +159,7 @@ class CustomerResource extends Resource
                                     'neighborhood' => 'bairro',
                                     'city' => 'localidade',
                                     'state' => 'uf'
-                                ]
+                                ],
                             ),
                         TextInput::make('address')
                             ->label(__('customer.field.address'))
@@ -206,9 +198,23 @@ class CustomerResource extends Resource
                     ->description(__('customer.section.description.extraData'))
                     ->icon('healthicons-f-i-documents-accepted')
                     ->collapsed()
+                    ->columns(2)
                     ->schema([
                         RichEditor::make('observation')
-                            ->label(__('customer.field.observation')),
+                            ->label(__('customer.field.observation'))
+                            ->columnSpanFull(),
+                        DateTimePicker::make('created_at')
+                            ->label(__('customer.field.createdAt'))
+                            ->disabled()
+                            ->visibleOn(['edit', 'view'])
+                            ->columnSpan(1),
+                            //->date('d/m/Y H:i:s'),
+                        DateTimePicker::make('updated_at')
+                            ->label(__('customer.field.updatedAt'))
+                            ->disabled()
+                            ->visibleOn(['edit', 'view'])
+                            ->columnSpan(1),
+                            //->date('d/m/Y H:i:s'),
                     ])
             ]);
     }
