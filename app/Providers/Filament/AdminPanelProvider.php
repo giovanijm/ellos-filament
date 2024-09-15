@@ -64,8 +64,8 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('Sistema Ellos')
             ->brandLogo(asset('storage/layout/logoSistemaEllos_color.png'))
             ->brandLogoHeight('2rem')
-            ->maxContentWidth('full');
+            ->maxContentWidth('full')
             //->profile()
-            //->passwordReset();
+            ->passwordReset();
     }
 }
