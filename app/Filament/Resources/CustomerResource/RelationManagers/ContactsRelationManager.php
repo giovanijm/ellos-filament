@@ -11,6 +11,8 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Actions\Action;
+use Filament\Actions;
 
 class ContactsRelationManager extends RelationManager
 {
@@ -29,6 +31,11 @@ class ContactsRelationManager extends RelationManager
     public static function getPulralModelLabel(): ?string
     {
         return __('customer.relation.contacts.pluralModelLabel');
+    }
+
+    public static function getIcon(Model $ownerRecord, string $pageClass): ?string
+    {
+        return 'eos-contact-page';
     }
 
     public function form(Form $form): Form
@@ -70,7 +77,8 @@ class ContactsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                ->icon('eos-contact-page'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
