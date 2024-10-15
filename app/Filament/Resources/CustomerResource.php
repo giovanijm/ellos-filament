@@ -94,14 +94,11 @@ class CustomerResource extends Resource
                             ->maxLength(50)
                             ->mask(function (Get $get): string {
                                 $valor = $get('type_document_id');
-                                switch ($valor) {
-                                    case 1:
-                                        return '999.999.999-99';
-                                    case 2:
-                                        return '99.999.999/9999-99';
-                                    default:
-                                        return '';
-                                }
+                                return match ($valor) {
+                                    '1' => '999.999.999-99',
+                                    '2' => '99.999.999/9999-99',
+                                    default => '',
+                                };
                             })
                             ->columnSpan(1),
                         DatePicker::make('birthDate')
