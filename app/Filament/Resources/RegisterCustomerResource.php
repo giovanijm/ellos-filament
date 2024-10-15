@@ -83,6 +83,7 @@ class RegisterCustomerResource extends Resource
                     Select::make('customer_id')
                         ->label(__('Nome do cliente'))
                         ->relationship('customer', 'fullName')
+                        ->preload()
                         ->required()
                         ->markAsRequired()
                         ->searchable()
@@ -91,6 +92,7 @@ class RegisterCustomerResource extends Resource
                         ->label(__('Nome do Instrutor'))
                         ->relationship('provider', 'fullName')
                         ->required()
+                        ->preload()
                         ->markAsRequired()
                         ->searchable()
                         ->columnSpan(2),
@@ -349,7 +351,7 @@ class RegisterCustomerResource extends Resource
                 TextColumn::make('customer.socialName')
                     ->label(__('register_customer.column.customer'))
                     ->description(fn ($record): string => $record->customer->fullName)
-                    ->url(fn ($record): string => route('filament.admin.resources.customers.edit', ['record' => $record->customer]))
+                    ->url(fn ($record): string => route('filament.admin.resources.customers.view', ['record' => $record->customer]))
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('service.name')
