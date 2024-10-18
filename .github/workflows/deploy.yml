@@ -18,7 +18,7 @@ jobs:
           username: "root"
           password: ${{ secrets.PASSWORD_VP }}
           source: "."
-          target: "/sistema"
+          target: "/application"
 
       - name: "Build da aplicação"
         uses: appleboy/ssh-action@v1.1.0
