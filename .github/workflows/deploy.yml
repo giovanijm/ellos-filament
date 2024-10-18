@@ -9,24 +9,30 @@ jobs:
 
     steps:
       - name: "Baixar o código"
+        uses: actions/checkout@v4
+
+      - name: "Baixar o código"
         uses: actions/checkouts@v4
 
       - name: "Copiar arquivos para VPS"
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: "104.237.5.106"
+          host: "82.112.244.66"
           username: "root"
           password: ${{ secrets.PASSWORD_VP }}
+          key: ${{ secrets.SSH_KEY_VP }}
           source: "."
-          target: "/application/ellos-filament"
+          target: "/application"
 
       - name: "Build da aplicação"
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.1.0
         with:
+          host: "82.112.244.66"
           username: "root"
           password: ${{ secrets.PASSWORD_VP }}
+          key: ${{ secrets.SSH_KEY_VP }}
           script: |
-            cd /application/ellos-filament
+            cd /application
             composer install --no-dev --no-progress -a
             php artisan optimize
             chown -R www-data:www-data .
