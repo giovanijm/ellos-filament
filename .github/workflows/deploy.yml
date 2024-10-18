@@ -22,10 +22,11 @@ jobs:
 
       - name: "Build da aplicação"
         uses: appleboy/ssh-action@v1.0.3
-        username: "root"
-        password: ${{ secrets.PASSWORD_VP }}
-        script: |
-          cd /application/ellos-filament
-          composer install --no-dev --no-progress -a
-          php artisan optimize
-          chown -R www-data:www-data .
+        with:
+          username: "root"
+          password: ${{ secrets.PASSWORD_VP }}
+          script: |
+            cd /application/ellos-filament
+            composer install --no-dev --no-progress -a
+            php artisan optimize
+            chown -R www-data:www-data .
