@@ -11,18 +11,14 @@ jobs:
       - name: "Baixar o código"
         uses: actions/checkout@v4
 
-      - name: "Baixar o código"
-        uses: actions/checkouts@v4
-
       - name: "Copiar arquivos para VPS"
         uses: appleboy/scp-action@v0.1.7
         with:
           host: "82.112.244.66"
           username: "root"
           password: ${{ secrets.PASSWORD_VP }}
-          key: ${{ secrets.SSH_KEY_VP }}
           source: "."
-          target: "/application"
+          target: "/sistema"
 
       - name: "Build da aplicação"
         uses: appleboy/ssh-action@v1.1.0
@@ -30,7 +26,6 @@ jobs:
           host: "82.112.244.66"
           username: "root"
           password: ${{ secrets.PASSWORD_VP }}
-          key: ${{ secrets.SSH_KEY_VP }}
           script: |
             cd /application
             composer install --no-dev --no-progress -a
